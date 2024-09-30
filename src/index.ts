@@ -60,9 +60,9 @@ console.log(`${propiedad1} ${propiedad2}`);
 
 //enumerados
 
-enum EstadoTarea{"T"="Terminado","P"="Pendiente","E"="En Proceso"};
+enum EstadoTarea{"Terminado"="T","Pendiente"="P","EnProceso"="E"};
 
-let estado = EstadoTarea.P;
+let estado = EstadoTarea.Pendiente;
 
 console.log(estado);
 
@@ -74,9 +74,9 @@ interface Tarea {
     estado:EstadoTarea
 }
 
-let tarea1: Tarea = {nombre:"tarea1",prioridad:2,estado:EstadoTarea.E}
+let tarea1: Tarea = {nombre:"tarea1",prioridad:2,estado:EstadoTarea.EnProceso}
 
-let tarea0 = {nombre:"tarea1",prioridad:2,estado:EstadoTarea.E} //sirve pero no es buena pratica
+let tarea0 = {nombre:"tarea1",prioridad:2,estado:EstadoTarea.EnProceso} //sirve pero no es buena pratica
 
 type Empleado = {
     nombre:string,
@@ -103,13 +103,13 @@ empleado2 = {nombre:"David",edad:38,sueldo:1400,codigo:"ad34dd"};
 //Operador ternario
 // condicion ? verdadero : falso
 
-console.log(tarea1.estado == "Terminado" ? `La tarea ${tarea1.nombre} se ha terminado`:`Terminado`);
+console.log(tarea1.estado == "T" ? `La tarea ${tarea1.nombre} se ha terminado`:`Terminado`);
 
 // IF-ELSE
 
-if(tarea1.estado == "Terminado"){
+if(tarea1.estado == "T"){
 //codigo 1
-}else if(tarea1.estado == "En Proceso"){
+}else if(tarea1.estado == "E"){
 //codigo 2
 }else{
     //resto de casos
@@ -119,15 +119,15 @@ if(tarea1.estado == "Terminado"){
 //Switch
 
 switch (tarea1.estado){
-    case "Terminado": 
+    case "T": 
     console.log("Terminado");
     break;
 
-    case "Pendiente":
+    case "P":
         console.log("Pendiente");
         break;
 
-    case "En Proceso":
+    case "E":
         console.log("en proceso");
         break;
 
@@ -146,3 +146,23 @@ try{
 }catch (error){
     console.log("Se ha producido un error al pasar el numero a string",error)
 }
+
+/*
+Estrucuturas de repeticion - bucles
+*/
+
+let tarea2 : Tarea = {estado: EstadoTarea.Terminado, nombre:"Tarea 2",prioridad:0};
+
+
+let listadoTareas :Tarea[]= [tarea0,tarea1,tarea2];
+
+// foreach
+
+listadoTareas.forEach(
+    (elemento,indice,arreglo) => {
+        console.log(indice,elemento,arreglo[indice].estado)
+    });
+    
+    
+
+
