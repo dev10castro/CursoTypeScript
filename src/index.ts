@@ -164,5 +164,57 @@ listadoTareas.forEach(
     });
     
     
+// WHILE
 
+while (tarea1.estado != EstadoTarea.Terminado){
+    console.log("Tarea no completada");
+    tarea1.estado = EstadoTarea.Terminado;
+}
+
+do {
+    console.log (`El estado de la tarea ${tarea1.nombre} es ${tarea1.estado}`)
+}while(tarea1.estado != EstadoTarea.Terminado);
+
+
+
+
+/**
+ * Funciones: nos permitirá crear bloque de códigos reutilizables.
+ * funtion name (nameParam: type):{}
+ */
+
+// Funciónes clásicas y documentación del código
+
+/**
+ * Muestra un saludo por consola a una persona
+ * @param nombre string nombre del usuario
+ */
+function saludar (nombre:string){
+    console.log(`Hola ${nombre}, qué tal estas?`);
+
+}
+
+saludar("David Castro");
+
+//Funciones con parámeros por defecto
+
+function saludarDefault (nombre:string = "David"){
+    console.log(`Hola ${nombre}, qué tal estas?`);
+}
+saludarDefault();
+saludarDefault("Juan");
+
+
+//Funciones con parámeros opcionales
+
+function saludarOpcional (nombre?:string){
+    let nombreParam = nombre;
+    if(nombreParam == undefined){
+        nombreParam = "Nombre Defecto";
+    }
+    console.log(`Hola ${nombreParam}, qué tal estas?`);
+
+}
+
+saludarOpcional();
 
