@@ -74,9 +74,9 @@ interface Tarea {
     estado:EstadoTarea
 }
 
-let tarea1: Tarea = {nombre:"tarea1",prioridad:2,estado:EstadoTarea.EnProceso}
+let tarea1: Tarea = {nombre:"tarea 1",prioridad:2,estado:EstadoTarea.EnProceso}
 
-let tarea0 = {nombre:"tarea1",prioridad:2,estado:EstadoTarea.EnProceso} //sirve pero no es buena pratica
+let tarea0 = {nombre:"tarea 0",prioridad:2,estado:EstadoTarea.EnProceso} //sirve pero no es buena pratica
 
 type Empleado = {
     nombre:string,
@@ -217,4 +217,82 @@ function saludarOpcional (nombre?:string){
 }
 
 saludarOpcional();
+
+
+// Clase 2/10/2024
+for(let x =0; x<=10;x++){
+    console.log(x)
+}
+
+// (valor1,valor2,valor3) => {}
+listadoTareas.forEach((elemento,indice,listadoTareas)=>{console.log(`${elemento.nombre}-${indice}-${listadoTareas}`)})
+
+
+for(let i=0;i<listadoTareas.length;i++){
+    let elemento=listadoTareas[i];
+    console.log(elemento);
+}
+
+
+// DO{} WHILE()
+
+
+
+
+//FUNCIONES BASICAS
+/**
+ * dado el parametro nombre muestra por pantalla
+ * @param nombre nombre a saludar
+ */
+function saludar2(direccion:string | number,nombre:string="david",apellido?:string): void{
+    if(apellido != undefined){
+        console.log(`Hola ${nombre} ${apellido}`);
+    }else{
+        console.log(`Hola ${nombre}`);
+    }
+    console.log(typeof(direccion));
+
+    
+}
+
+
+saludar2("moron","Garcia");
+
+//funciones anonimas
+
+let fanonima = function(){console.log("hola mundo")}
+
+fanonima();
+
+let fitera = function(elemento:Tarea,indice:number){console.log(`la tarea ${elemento.nombre} esta en numero ${indice}`)}
+
+listadoTareas.forEach(fitera);
+
+
+let tarea3 : Tarea = {estado: EstadoTarea.Terminado, nombre:"Tarea 3",prioridad:0};
+let tarea4 : Tarea = {estado: EstadoTarea.Terminado, nombre:"Tarea 4",prioridad:0};
+
+// funciones con multiples parametros
+
+function muestraTareas(... nombres : Tarea[]): void {
+    nombres.forEach(fitera);
+}
+
+muestraTareas(tarea0,tarea2,tarea1,tarea3,tarea4);
+
+let listadoTareas2 = [...listadoTareas,tarea3,tarea4];
+
+muestraTareas(...listadoTareas2);
+
+
+// funciones arrow
+
+let farrow = (tarea:Tarea,indice:number) => {console.log(`${tarea.nombre} ${indice}`)};
+
+listadoTareas2.forEach(farrow);
+listadoTareas2.forEach((tarea:Tarea)=>{console.log(`${tarea.nombre}`)})
+listadoTareas2.forEach(function (tarea:Tarea){console.log(`${tarea.nombre}`)})
+farrow(tarea0,1);
+
+
 
