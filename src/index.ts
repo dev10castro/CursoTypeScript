@@ -295,4 +295,77 @@ listadoTareas2.forEach(function (tarea:Tarea){console.log(`${tarea.nombre}`)})
 farrow(tarea0,1);
 
 
+let fsuma = function suma(a:number,b:number){
+    return a+b;
+}
+
+let fresta = function resta(a:number,b:number){
+    return a-b;
+}  
+
+
+
+function opera (x:number,y:number, funcion:(a:number,b:number)=>number){
+    return funcion(x,y);
+}
+
+opera(2,3,fsuma); //suma 2+3
+
+opera(2,3,fresta); //resta 2-3
+
+
+
+//Funciones asincronas
+
+async function asincrona (){
+    let suma = 0;
+    for(let i=1;i<=10;i++){
+       suma+=i;
+    }
+    return suma;
+}
+
+asincrona().then((data:number)=>{console.log(`el resultado es ${data}`)}); 
+
+console.log("fin de la funcion asincrona");
+
+
+async function getDataUniversity(): Promise<Universidad[]> {
+    const data = await fetch("https://universities.hipolabs.com/search?country=Spain");
+    let respuesta : Promise<Universidad[]> = await data.json() as Promise<Universidad[]>;
+    return respuesta;
+}
+
+//
+
+type Universidad = {
+    domains: string[],
+    alpha_two_code: string,
+    name: string,
+}
+
+getDataUniversity().then((data:Universidad[])=>{
+    //console.log(data.forEach((elemento:Universidad)=>{console.log(elemento.name)}))
+
+    for(let i=0;i<data.length;i++){
+        console.log(data[i].name);
+    }
+});
+
+//FUNCION GENERADORA
+
+function* generadora(): Generator<Tarea>{
+   for (let tarea in listadoTareas){ {
+    yield listadoTareas[tarea];
+        
+    }
+   }
+}
+
+
+let funcionGeneradora = generadora();
+
+console.log(funcionGeneradora.next());// tarea 1
+console.log(funcionGeneradora.next());// tarea 2
+console.log(funcionGeneradora.next());// tarea 3
 
