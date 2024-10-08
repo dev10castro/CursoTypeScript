@@ -369,3 +369,155 @@ console.log(funcionGeneradora.next());// tarea 1
 console.log(funcionGeneradora.next());// tarea 2
 console.log(funcionGeneradora.next());// tarea 3
 
+
+//FUNCIONES ASINCRONAS
+async function getUniversitiesAsync(pais: string): Promise<Universidad[]> {
+   
+        try {
+            const data = await fetch("https://universities.hipolabs.com/search?country=Spain");
+            if (!data.ok) {
+                throw new Error(`HTTP error! status: ${data.status}`);
+            }
+            let respuesta: Universidad[] = await data.json() as Universidad[];
+            return respuesta;
+        } catch (error) {
+            console.error("Error al realizar la solicitud:", error);
+            return [];  // Retorna un array vacío o maneja el error de otra forma
+        }
+    }
+
+
+// Llamamos a la función asincrona y mostramos el JSON de las universidades existentes en Spain
+getUniversitiesAsync("Spain").then((data)=>{console.log(data[1])});
+
+// Como curiosidad, podéis observar que esta línea se ejecuta antes aún estando después de la llamada a la API. 
+// Esto ocurre porque la función getDataFromAPI es una función asíncrona y muestra los resultados en el momento que termina su ejecución.
+console.log("Linea posterior a funcion async")
+
+/**
+ * FUNCIONES GENERADORAS:
+ * Una función generadora es una función que se puede pausar y reanudar, y por lo tanto, nos puede devolver múltiples valores.
+ * Para poder declarar una función generadora es necesario añadir el * después de la palabra reservada function. 
+ * Observa que en lugar de llamar a return para devolver un valor, utilizamos yield.
+ * Fuente:https://lenguajejs.com/javascript/funciones/generadores/
+ */
+
+// Ejemplo 1: Función que itera elementos de un array y los devuelve
+
+function* fGenTareas (): Generator<Tarea>{
+
+    let tareas: Tarea[] = [... listadoTareas]
+
+    for(let i in tareas){
+        yield tareas[i];
+    }
+    // No es posible usar la función foreach porque al ser una función callback no se puede usar con yield.
+}
+
+// Preparamos nuestra función generadora
+const genTareas = fGenTareas();
+console.log(genTareas.next()); // Accedemos al primer valor del array
+
+// Podemos obtener todos los valores de nuestra función generadora usando el operador spread
+
+// const getAllTareas = [...fGenTareas()];
+// console.log(getAllTareas);
+
+
+
+// EJEMPLO 2: función generadora y asíncrona que accede a una API y devuelve cada uno de los elementos del array JSON.
+/**
+ * Funcion generadora y asíncrona que devuelve páginas web que han sufrido alguna brecha de seguridad
+ */
+
+type Website = {
+    Name:string,
+    Title:string,
+    Domain: string,
+    Description:string
+}
+async function* generatorGetBreaches():AsyncGenerator<Website> {
+
+    let respuesta:Response = await fetch("https://haveibeenpwned.com/api/v2/breaches");
+    // Convertimos la respuesta de la petición GET en un archivo JSON
+    let datos: Website[]= await respuesta.json() as Website[]
+    
+    for(let i in datos){
+        yield datos[i]
+    }
+    
+    
+}
+
+const valoresUniversidades = generatorGetBreaches();
+valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Description}  \n`); console.log(`Is the last element? ${done} \n`);});
+valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Description} \n`); console.log(`Is the last element? ${done} \n`);});
+
+/**
+ * Sobrecarga de funciones:
+ * La sobrecarga de funciones permite declarar varias versiones de una función con diferentes parámetros y tipos de retorno. 
+ * Cada versión de la función (o firma) se llama sobrecarga.
+ * 
+ * Para crear sobrecargas de funciones en TypeScript debemos hacer lo siguiente
+ * 1. Definir las firmas de las funciones sobrecargadas.
+ * 2. Proveer una única implementación de la función que maneje todas las combinaciones de parámetros.
+ * Fuente:  https://www.luisllamas.es/typescript-sobrecarga-de-funciones/
+*/
+
+// Definición de sobrecargas
+// En este ejemplo, la función miFuncion tiene dos firmas: una que acepta un string y otra que acepta un number. 
+// La implementación de la función maneja ambas firmas.
+
+
+function funcionSobrecarga(param: string): string;
+function funcionSobrecarga(param: number): number;
+
+// Implementación de la función
+function funcionSobrecarga(param: string | number): string | number {
+    // hacer cosas
+
+    return "";
+}
+funcionSobrecarga(12);   // esto no da error
+funcionSobrecarga("12")  // esto no da error
+
+// Sobrecarga con diferentes tipos de parámetros.
+
+function funcionSobrecargaDiffParam(a: string, b: string): string;
+function funcionSobrecargaDiffParam(a: number, b: number): number;
+
+// Implementación de la función
+function funcionSobrecargaDiffParam(a: string | number, b: string | number): string | number {
+    if (typeof a === "string" && typeof b === "string") {
+        return a + b;
+    } else if (typeof a === "number" && typeof b === "number") {
+        return a + b;
+    }
+    throw new Error("Tipos de parámetros no coinciden");
+}
+
+console.log(funcionSobrecargaDiffParam("Hola, ", "mundo")); // "Hola, mundo"
+console.log(funcionSobrecargaDiffParam(5, 10)); // 15
+//console.log(funcionSobrecargaDiffParam("Hola", 10)); //ERROR
+
+funcionSobrecarga(13)
+
+//Sobrecarga con diferentes cantidades de parámetros
+// Definición de sobrecargas
+function mostrarMensaje(mensaje: string): void;
+function mostrarMensaje(mensaje: string, veces: number): void;
+
+// Implementación de la función
+function mostrarMensaje(mensaje: string, veces?: number): void {
+    if (veces === undefined) {
+        console.log(mensaje);
+    } else {
+        for (let i = 0; i < veces; i++) {
+            console.log(mensaje);
+        }
+    }
+}
+
+mostrarMensaje("Hola"); // "Hola"
+mostrarMensaje("Hola", 3); // "Hola" "Hola" "Hola"
+
