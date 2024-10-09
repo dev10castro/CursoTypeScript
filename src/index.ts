@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'
+
 console.log("Hola mundo2");
 
 /**
@@ -552,3 +554,125 @@ function saludos(nombre:string,apellido?:string,edad?:string|number):string{
 console.log(saludos("David"));
 console.log(saludos("David","Castro"));
 console.log(saludos("David","Castro","38"));
+
+
+
+/*EJERCICIO 1
+Crea una función en tu proyecto que reciba como parámetro un string llamado "type" que tendrá como valor por defecto "SessionStorage", un string 
+llamado "key", un array de objetos Tarea llamado "data" . El funcionamiento de dicha función debe ser el siguiente: dependiendo de si el valor del 
+parámetro "type" es "session" o "local" se almacenará la información del array empleando el objeto "SessionStorage" o "LocalStorage". La información 
+del parámetro data se almacenará usando la key pasada como parámetro
+*/
+
+function userSession (type:string="SessionStorage",key:string,data:Tarea[]){
+    if(type == "session"){
+        sessionStorage.setItem(key,JSON.stringify(data));
+        console.log("Datos almacenados correctamente en SessionStorage");
+    }else if(type == "local"){
+        localStorage.setItem(key,JSON.stringify(data));
+        console.log("Datos almacenados correctamente en LocalStorage");
+    }else{
+        console.log("Tipo de almacenamiento no válido");
+    }
+}
+
+
+/* EJERCICIO 3
+Ejecuta la función anterior usando pasándole como parámetro el valor de type "session", un array 
+de Tareas, y como clave "datos". Además, deberás ejecutar de nuevo la  función pasándole como parámetro 
+el valor de type "local", un array de Tareas, y como clave "datos".
+*/
+
+let listaTareas : Tarea[] = [tarea0,tarea1,tarea2,tarea3,tarea4];
+
+//mostramos la info
+
+userSession("session","datos",listaTareas);
+userSession("local","datos",listaTareas);
+userSession("local","datos",listaTareas);
+
+/* EJERCICIO 4
+Crea una función en tu proyecto que permita recuperar la información almacenada en SessionStorage y LocalStorage.
+Dicha función debe recibir dos parámetros: type que será un string y tendrá como valor por defecto "session", y un string 
+llamado "key". El funcionamiento de la función debe ser el siguiente: dependiendo el valor de type, si es "sessión" o 
+"local", se recuperará la información empleando el objeto "SessionStorage" o "LocalStorage" y la key pasada como parámetro.
+*/
+
+function recoverInfo(type:string="session",key:string){
+   if(type=="session"){
+        let info= sessionStorage.getItem(key);
+        console.log(info);
+   }else if(type == "local"){
+        let info = localStorage.getItem(key);
+        console.log(info);
+   }else{
+    console.log("Type no valido");
+   }
+}
+
+
+
+/*EJERCICIO 5
+Recupera la información almacenada en el navegador y muestrala por consola.
+*/
+
+recoverInfo("session","datos");
+recoverInfo("local","datos");
+
+/*EJERCICIO 6
+Crea una función del mismo estilo que las anteriores que permita borrar la información 
+almacenada en SessiónStorage y LocalStorage. Solo debe recibir como parámetro un string 
+llamado "type" y un string llamado "key". Ejecuta dicha función tantas veces como sea 
+necesaria para borrar toda la información almacenada.
+*/
+
+function deleteInfo(type:string="session",key:string){
+    if(type=="session"){
+        for(let i=0;i<sessionStorage.length;i++){
+            sessionStorage.removeItem(key);
+        } 
+        console.log("Datos eliminados correctamente de SessionStorage");
+   }else if(type == "local"){
+        for(let i=0;i<localStorage.length;i++){
+            localStorage.removeItem(key);
+        console.log("Datos eliminados correctamente de LocalStorage");
+    }
+   }else{
+    console.log("Type no valido");
+   }
+}
+
+
+deleteInfo("session","datos");
+deleteInfo("local","datos");
+
+
+
+//Cookeis importados arriba en la linea 1
+//Crea una cookie llamada nombre con tu nombre que expire a los 7 días y sea accesible desde el path /
+
+Cookies.set('nombre', 'David', {expires:1,path:"/",sameSite:'Strict',secure:false})
+
+//Crea una cookie llamada apellidos con tu apellido que expire a los 2 días
+
+Cookies.set('apellidos', 'Castro', {expires:2,path:"/",sameSite:'Strict',secure:false})
+
+
+//Crea una cookie llamada email con un email que expire a los 4 días.
+
+Cookies.set("email","estenoesmiemail@gmail.com",{expires:4,path:"/",sameSite:'Strict',secure:false});
+
+//Recupera todas las cookies anteriores.
+
+console.log(Cookies.get("nombre"));
+console.log(Cookies.get("apellidos"));
+console.log(Cookies.get("email"));
+
+//Borra todas las cookies anteriores
+
+Cookies.remove("nombre");
+Cookies.remove("apellidos");
+Cookies.remove("email");
+
+
+
