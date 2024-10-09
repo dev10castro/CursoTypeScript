@@ -329,7 +329,7 @@ asincrona().then((data:number)=>{console.log(`el resultado es ${data}`)});
 
 console.log("fin de la funcion asincrona");
 
-
+/*
 async function getDataUniversity(): Promise<Universidad[]> {
     const data = await fetch("https://universities.hipolabs.com/search?country=Spain");
     let respuesta : Promise<Universidad[]> = await data.json() as Promise<Universidad[]>;
@@ -351,6 +351,8 @@ getDataUniversity().then((data:Universidad[])=>{
         console.log(data[i].name);
     }
 });
+*/
+
 
 //FUNCION GENERADORA
 
@@ -369,27 +371,19 @@ console.log(funcionGeneradora.next());// tarea 1
 console.log(funcionGeneradora.next());// tarea 2
 console.log(funcionGeneradora.next());// tarea 3
 
-
+/*
 //FUNCIONES ASINCRONAS
 async function getUniversitiesAsync(pais: string): Promise<Universidad[]> {
-   
-        try {
-            const data = await fetch("https://universities.hipolabs.com/search?country=Spain");
-            if (!data.ok) {
-                throw new Error(`HTTP error! status: ${data.status}`);
-            }
-            let respuesta: Universidad[] = await data.json() as Universidad[];
-            return respuesta;
-        } catch (error) {
-            console.error("Error al realizar la solicitud:", error);
-            return [];  // Retorna un array vacío o maneja el error de otra forma
-        }
-    }
+    const response = await fetch(`https://universities.hipolabs.com/search?country=${pais}`);
+    const data: Universidad[] = await response.json() as Universidad[];
+    return data;
+}
+    
 
 
 // Llamamos a la función asincrona y mostramos el JSON de las universidades existentes en Spain
 getUniversitiesAsync("Spain").then((data)=>{console.log(data[1])});
-
+*/
 // Como curiosidad, podéis observar que esta línea se ejecuta antes aún estando después de la llamada a la API. 
 // Esto ocurre porque la función getDataFromAPI es una función asíncrona y muestra los resultados en el momento que termina su ejecución.
 console.log("Linea posterior a funcion async")
@@ -423,12 +417,27 @@ console.log(genTareas.next()); // Accedemos al primer valor del array
 // const getAllTareas = [...fGenTareas()];
 // console.log(getAllTareas);
 
+function* fgeneradora2() : Generator<string>{
+    yield "hola"
+    yield "mundo"
+    yield "adios"
+}
+
+let fgen2 = fgeneradora2();
+console.log(fgen2.next());//hola
+console.log(fgen2.next());//mundo
+console.log(fgen2.next());//adios
+
+
+
+
+
 
 
 // EJEMPLO 2: función generadora y asíncrona que accede a una API y devuelve cada uno de los elementos del array JSON.
-/**
- * Funcion generadora y asíncrona que devuelve páginas web que han sufrido alguna brecha de seguridad
- */
+
+ // Funcion generadora y asíncrona que devuelve páginas web que han sufrido alguna brecha de seguridad
+ 
 
 type Website = {
     Name:string,
@@ -440,18 +449,21 @@ async function* generatorGetBreaches():AsyncGenerator<Website> {
 
     let respuesta:Response = await fetch("https://haveibeenpwned.com/api/v2/breaches");
     // Convertimos la respuesta de la petición GET en un archivo JSON
-    let datos: Website[]= await respuesta.json() as Website[]
+    let datos: Website[]= await respuesta.json() as Website[];
     
     for(let i in datos){
         yield datos[i]
     }
-    
-    
+   
 }
 
-const valoresUniversidades = generatorGetBreaches();
-valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Description}  \n`); console.log(`Is the last element? ${done} \n`);});
-valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Description} \n`); console.log(`Is the last element? ${done} \n`);});
+let valoresUniversidades = generatorGetBreaches();
+
+valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Domain} - ${value.Description} \n`); console.log(`Is the last element? ${done} \n`);});
+valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Domain} - ${value.Description}\n`); console.log(`Is the last element? ${done} \n`);});
+valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Domain} - ${value.Description}\n`); console.log(`Is the last element? ${done} \n`);});
+valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Domain} - ${value.Description}\n`); console.log(`Is the last element? ${done} \n`);});
+
 
 /**
  * Sobrecarga de funciones:
@@ -521,3 +533,22 @@ function mostrarMensaje(mensaje: string, veces?: number): void {
 mostrarMensaje("Hola"); // "Hola"
 mostrarMensaje("Hola", 3); // "Hola" "Hola" "Hola"
 
+function saludos(nombre:string):string;
+function saludos(nombre:string,apellido:string):string;
+function saludos(nombre:string,apellido:string, edad:string):string;
+function saludos(nombre:string,apellido:string, edad:string):string;
+
+
+function saludos(nombre:string,apellido?:string,edad?:string|number):string{
+    if(apellido == undefined && edad == undefined){
+        return `Hola ${nombre}`;
+    }else if(edad == undefined){
+        return `Hola ${nombre} ${apellido}`;
+    }else{
+        return `Hola ${nombre} ${apellido}, tu edad es de ${edad} años.`;
+    }
+}
+
+console.log(saludos("David"));
+console.log(saludos("David","Castro"));
+console.log(saludos("David","Castro","38"));
