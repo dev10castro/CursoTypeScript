@@ -462,10 +462,6 @@ async function* generatorGetBreaches():AsyncGenerator<Website> {
 let valoresUniversidades = generatorGetBreaches();
 
 valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Domain} - ${value.Description} \n`); console.log(`Is the last element? ${done} \n`);});
-valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Domain} - ${value.Description}\n`); console.log(`Is the last element? ${done} \n`);});
-valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Domain} - ${value.Description}\n`); console.log(`Is the last element? ${done} \n`);});
-valoresUniversidades.next().then(({value,done}) => {console.log(`${value.Name} - ${value.Domain} - ${value.Description}\n`); console.log(`Is the last element? ${done} \n`);});
-
 
 /**
  * Sobrecarga de funciones:
@@ -673,6 +669,43 @@ console.log(Cookies.get("email"));
 Cookies.remove("nombre");
 Cookies.remove("apellidos");
 Cookies.remove("email");
+
+
+// acceder al dom
+
+let input = document.getElementById("input-contenido") as HTMLInputElement;
+let btnNuevoContenido = document.getElementsByName("btn-add-content")[0] as HTMLButtonElement;
+let div = document.getElementsByTagName("div") as HTMLCollectionOf<HTMLDivElement>;
+
+
+console.log(`Valor del input : ${input.value}`);
+console.log(btnNuevoContenido);
+console.log(div);
+
+let documentoOl = document.getElementById("lista-contenidos");
+let elementosLi = document.getElementById("lista-contenidos")?.getElementsByTagName("li");
+let elementoLi2 = document.querySelectorAll("ol[li='lista_contenidos'] li");
+
+console.log(elementosLi);
+console.log(elementoLi2); 
+
+//creacion de elementos
+
+let nuevoElemento : HTMLLIElement = document.createElement("li");
+
+nuevoElemento.innerText = "nuevo elemento";
+documentoOl?.appendChild(nuevoElemento);
+documentoOl?.append(nuevoElemento);
+//documentoOl?.prepend(nuevoElemento);
+
+
+btnNuevoContenido.addEventListener("click", (event)=>{
+
+    //to do
+    console.log("usuario hace click en el boton");
+
+})
+
 
 
 
