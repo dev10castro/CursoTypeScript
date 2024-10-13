@@ -677,7 +677,6 @@ let input = document.getElementById("input-contenido") as HTMLInputElement;
 let btnNuevoContenido = document.getElementsByName("btn-add-content")[0] as HTMLButtonElement;
 let div = document.getElementsByTagName("div") as HTMLCollectionOf<HTMLDivElement>;
 
-
 console.log(`Valor del input : ${input.value}`);
 console.log(btnNuevoContenido);
 console.log(div);
@@ -691,20 +690,53 @@ console.log(elementoLi2);
 
 //creacion de elementos
 
-let nuevoElemento : HTMLLIElement = document.createElement("li");
 
+
+/*
 nuevoElemento.innerText = "nuevo elemento";
 documentoOl?.appendChild(nuevoElemento);
 documentoOl?.append(nuevoElemento);
 //documentoOl?.prepend(nuevoElemento);
+*/
 
 
-btnNuevoContenido.addEventListener("click", (event)=>{
+// PROBANDO COGER TEXTO Y AÑADIENDO A UN NUEVO <li>
 
-    //to do
-    console.log("usuario hace click en el boton");
+ // Obtiene la referencia del elemento <ul> con el id "lista-contenidos"
+let documentoOl2 = document.getElementById("lista-contenidos") as HTMLUListElement;
 
-})
+// Obtiene la referencia del botón con el atributo name "btn-add-content"
+let btnNuevoContenido2 = document.getElementsByName("btn-add-content")[0] as HTMLButtonElement;
+
+// Obtiene la referencia del campo de entrada (input) con el id "input-contenido"
+let nuevoElementoInput = document.getElementById("input-contenido") as HTMLInputElement;
+
+
+btnNuevoContenido2.addEventListener("click", (event) => {
+    // Recupera el valor del campo de entrada (el texto que hemos escrito)
+    const texto = nuevoElementoInput.value;
+
+    // Verifica si el campo de entrada no está vacío
+    if (texto.trim() !== "") {
+        // Crea un nuevo elemento <li> en el DOM
+        let nuevoElemento = document.createElement("li");
+
+        // Asigna el texto ingresado al nuevo <li>
+        nuevoElemento.innerText = texto;
+
+        // Añade el nuevo elemento <li> al <ul> (lista) existente en el DOM
+        documentoOl2.appendChild(nuevoElemento);
+
+        // Limpia el campo de entrada para que el usuario pueda ingresar nuevo texto
+        nuevoElementoInput.value = "";
+    } else {
+        // Si el campo de entrada está vacío, muestra un mensaje en la consola
+        console.log("El campo de entrada está vacío");
+    }
+});
+
+
+
 
 
 
