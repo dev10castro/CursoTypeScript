@@ -1,120 +1,164 @@
+import { styleText } from "util";
 
-// PROBANDO COGER TEXTO Y AÑADIENDO A UN NUEVO <li>
+// Obtengo todos los elementos con el atributo 'name="star-li"' que representan las estrellas
+let estrellas = document.getElementsByName("star-li") as NodeListOf<HTMLElement>;
 
-import { get } from "http";
+// Obtengo el botón con el id "btn-remove-content", que probablemente sirve para eliminar algo de la página
+let borraContenido = document.getElementById("btn-remove-content") as HTMLButtonElement;
 
- // Obtiene la referencia del elemento <ul> con el id "lista-contenidos"
- let documentoOl2 = document.getElementById("lista-contenidos") as HTMLUListElement;
-console.log("probando");
+// Obtengo el primer elemento que tiene el atributo 'name="btn-add-content"'
+let addContenido = document.getElementsByName("btn-add-content")[0] as HTMLButtonElement;
 
- // Obtiene la referencia del botón con el atributo name "btn-add-content"
- let btnNuevoContenido2 = document.getElementsByName("btn-add-content")[0] as HTMLButtonElement;
- 
- // Obtiene la referencia del campo de entrada (input) con el id "input-contenido"
- let nuevoElementoInput = document.getElementById("input-contenido") as HTMLInputElement;
+// Obtengo el campo de entrada de texto con el id "input-contenido"
+let textoInput = document.getElementById("input-contenido") as HTMLInputElement;
 
- //obtenemos elemento ol
+// Obtengo el elemento 'body' de la página
+let body = document.getElementsByTagName("body")[0] as HTMLBodyElement;
 
- let elementoOl = document.getElementsByTagName("ol");
+// Obtengo el elemento <ol> que tiene el id "lista-contenidos"
+let listaOl = document.getElementById("lista-contenidos") as HTMLOListElement;
 
- //obtenemos los elemento li
-
-    let elementoLi = document.getElementsByTagName("li");
-
-   
+// Obtengo el <div> que tiene el id "errores"
+let divError = document.getElementById("errores") as HTMLDivElement;
 
 
- 
-// Obtenemos la referencia del boton borrar
 
- 
- btnNuevoContenido2.addEventListener("click", (event) => {
-     // Recupera el valor del campo de entrada (el texto que hemos escrito)
-     const texto = nuevoElementoInput.value;
- 
-     // Verifica si el campo de entrada no está vacío
-     if (texto.trim() !== "") {
-         // Crea un nuevo elemento <li> en el DOM
-         let nuevoElemento = document.createElement("li");
- 
-         // Asigna el texto ingresado al nuevo <li>
-         nuevoElemento.innerText = texto;
- 
-         // Añade el nuevo elemento <li> al <ul> (lista) existente en el DOM
-         documentoOl2.appendChild(nuevoElemento);
- 
-         // Limpia el campo de entrada para que el usuario pueda ingresar nuevo texto
-         nuevoElementoInput.value = "";
-     } else {
-         // Si el campo de entrada está vacío, muestra un mensaje en la consola
-         console.log("El campo de entrada está vacío");
-     }
- });
+/**
+ * Cada vez que el usuario pase el cursor por encima de una de las estrellas de los elemento 
+ * de la lista esta cambiará su estado al estado opuesto. Para ello, es necesario añadirle la 
+ * clase bi-star o bi-star-fill. Recuerda que el método classlist devuelve un array con cada clase 
+ * de un elemento y mediante classlist.remove y classlist.toggle podemos añadir o eliminar valores 
+ * al atributo class de un elemento HTML.
+ * 
+ * 
+ * Además de lo indicado anteriormente, cuando un usuario haga clic en una de las estrellas cambiará su estado al estado opuesto.
+ */
+
+// Se recorre cada una de las estrellas en la lista 'estrellas'
+estrellas.forEach(estrella => {
 
 
- let nuevoElementodel = document.getElementsByName("btn-del-content")[0] as HTMLButtonElement;
-
-nuevoElementodel.addEventListener("click", (event) => {
-    // Recupera el valor del campo de entrada (el texto que hemos escrito)
-    const texto = nuevoElementoInput.value;
-
-    // Verifica si el campo de entrada no está vacío
-    if (texto.trim()) {
-        // Selecciona todos los elementos <li> dentro de la lista
-        let listaElementos = documentoOl2.getElementsByTagName("li");
-        let encontrado = false;
-
-        // Recorre los elementos <li> y busca coincidencias
-        for (let i = 0; i < listaElementos.length; i++) {
-            if (listaElementos[i].textContent?.trim() === texto.trim()) {
-                // Si encuentra un <li> con el texto coincidente, lo elimina
-                documentoOl2.removeChild(listaElementos[i]);
-                encontrado = true;
-                break; // Sale del bucle una vez que encuentra y elimina el elemento
-            }
+    estrella.addEventListener("mouseover", evento => {
+        
+        if (!estrella.classList.contains("clicked")) {// Si la estrella no está clicada...
+            
+            estrella.classList.remove("bi-star"); // Quitamos la clase de estrella vacía
+            estrella.classList.add("bi-star-fill"); // Añadimos la clase de estrella llena
         }
+    });
 
-        // Si no se encontró ningún elemento con ese texto
-        if (!encontrado) {
-            console.log("No se encontró ningún elemento con ese nombre");
+    // Se añade un evento cuando el ratón sale de la estrella "mouseout"
+    estrella.addEventListener("mouseout", evento => {
+        // Si la estrella no está clicada 
+        if (!estrella.classList.contains("clicked")) {//Si es distinto a clicked        
+            estrella.classList.remove("bi-star-fill"); // Quitamos la clase de estrella llena
+            estrella.classList.add("bi-star"); // Añadimos la clase de estrella vacía
         }
+    });
 
-        // Limpia el campo de entrada
-        nuevoElementoInput.value = "";
-    } else {
-        // Si el campo de entrada está vacío, muestra un mensaje en la consola
-        console.log("El campo de entrada está vacío");
+    // Se añade un evento cuando el usuario hace click en la estrella
+    estrella.addEventListener("click", evento => {
+        
+        if (estrella.classList.contains("clicked")) {// Si la estrella ya está clicada...
+           
+            estrella.classList.remove("clicked"); // Quito la marca de que está clicada
+            estrella.classList.remove("bi-star-fill"); // Quito la estrella llena
+            estrella.classList.add("bi-star"); // Vuelvo a poner la estrella vacía
+        } else {
+            // Si la estrella no estaba clicada, entonces la marco 
+            estrella.classList.add("clicked"); // Aqui se indica que está clicada añadiendo la clase 'clicked'
+            estrella.classList.remove("bi-star"); // Quito la estrella vacía
+            estrella.classList.add("bi-star-fill"); // Añado la estrella llena
+        }
+    });
+});
+
+
+
+/**
+ * El botón "Añadir un nuevo contenido" añadirá un nuevo elemento a la lista de contenidos, siempre y cuando el texto
+ *  introducido en el input sea diferente a vacío, de lo contrario, se mostrará un error.
+ */
+
+
+addContenido.addEventListener("click", evento =>{ //evento de ecucha al pulsar el boton añadir
+
+    if(textoInput.value.trim()!=""){ //si el texto no está vacío
+        //creamos el elemento estrella
+        let star = document.createElement("i");
+        star.classList.add("bi"); // Al haber un espacio hay que hacer dos add
+        star.classList.add("bi-star");
+        star.setAttribute("name","star-li"); //añadimos un atributo name
+        let elementoLi = document.createElement("li"); //creo un elemento li
+        let texto = document.createTextNode(textoInput.value); //creo una variable texto con el texto de input
+        elementoLi.appendChild(star); //añado el elemento i
+        elementoLi.appendChild(texto); //añado el texto
+        listaOl.appendChild(elementoLi); //se añade el li 
+        textoInput.value=""; //se pone el texto a vacio en el input
+
+
+    }else{
+        let mensajeErr = document.getElementById("p-errores") as HTMLParagraphElement;
+        mensajeErr.textContent="El campo de texto está vacío";
+        mensajeErr.style.color= "red";
+        divError.appendChild(mensajeErr);
     }
-});
+})
+
+
+/**
+ * El botón "Borrar contenido" eliminará el contenido de la lista cuyo texto sea igual al indicado
+ * en el input. De nuevo, si el valor del input es vacío se mostrará un error.
+ */
+
+borraContenido.addEventListener("click", evento =>{ //creo un eventlistener
+      let texto = textoInput.value; //recojo el cmapo de texto del input
+
+      if(texto.trim()){ //si el campo no esta vacío...
+
+        let listali = listaOl.getElementsByTagName("li"); //recojo todos los elementos li
+        
+        for (let index = 0; index < listali.length; index++) {
+            if(listali[index].textContent?.trim()==texto.trim()){ //busco el li el cual su contenido sea igual al texto introducido
+
+               listaOl.removeChild(listali[index]);//borramos el hijo <li> a la <ol>
+               textoInput.value=""; // seteamos el texto y borramos lo escrito
+               break;
+            }  else{
+                let mensajeErr = document.getElementById("p-errores") as HTMLParagraphElement; //recogemos elemento p-errores
+                mensajeErr.textContent="No hay coincidencias";
+                mensajeErr.style.color= "red";
+                divError.appendChild(mensajeErr);        //mostramos el mensaje de error
+        }
+        }
+
+      }else{
+        let mensajeErr = document.getElementById("p-errores") as HTMLParagraphElement;
+        mensajeErr.textContent="No se puede borrar ningún elemento <li> porque el campo de texto está vacío";
+        mensajeErr.style.color= "red";
+        divError.appendChild(mensajeErr);
+      }
+})
 
 
 
-// ejemplo api perros https://dog.ceo/api/breeds/image/random
-
-let url = "https://dog.ceo/api/breeds/image/random";
-
-type perro={
-    message: string;
-    status: string;
-}
 
 
-async function getDogImage(){
 
-let response = await fetch(url);
 
-let data: perro = await response.json();
 
-return data;
 
-}
 
-let imgPerro = getDogImage();
 
-imgPerro.then((data) => {
-    let datos = data;
-    console.log(datos);
-    let img = document.createElement("img");
-    img.src = datos.message;
-    document.body.appendChild(img);
-});
+
+
+
+
+
+
+    
+ 
+ 
+
+
+
