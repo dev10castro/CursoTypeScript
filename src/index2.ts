@@ -109,6 +109,7 @@ return data;
 
 }
 
+
 let imgPerro = getDogImage();
 
 imgPerro.then((data) => {
@@ -118,3 +119,26 @@ imgPerro.then((data) => {
     img.src = datos.message;
     document.body.appendChild(img);
 });
+
+//creamos una funcion para poner de nuevo un perro
+function ponerDeNuevoPerro(){
+let imgPerro = getDogImage();
+
+imgPerro.then((data) => {
+    let datos = data;
+    console.log(datos);
+    let img = document.createElement("img");
+    img.src = datos.message;
+    document.body.appendChild(img);
+});
+
+}
+
+document.body.addEventListener("click", (event) => {
+    if ((event.target as HTMLImageElement).tagName === "IMG") {
+        ponerDeNuevoPerro(); // Añadir una nueva imagen al hacer clic en una imagen existente
+        //y borra la anterior
+        document.body.removeChild(event.target as HTMLImageElement);
+    }
+});
+

@@ -735,6 +735,67 @@ btnNuevoContenido2.addEventListener("click", (event) => {
     }
 });
 
+// ejemplo api perros https://dog.ceo/api/breeds/image/random
+
+let url = "https://dog.ceo/api/breeds/image/random";
+
+type perro={
+    message: string;
+    status: string;
+}
+
+
+async function getDogImage(){
+
+let response = await fetch(url);
+
+let data: perro = await response.json();
+
+return data;
+
+}
+
+
+let imgPerro = getDogImage();
+
+imgPerro.then((data) => {
+    let datos = data;
+    console.log(datos);
+    let img = document.createElement("img");
+    img.src = datos.message;
+    document.body.appendChild(img);
+});
+
+//creamos una funcion para poner de nuevo un perro
+function ponerDeNuevoPerro(){
+let imgPerro = getDogImage();
+
+imgPerro.then((data) => {
+    let datos = data;
+    console.log(datos);
+    let img = document.createElement("img");
+    img.src = datos.message;
+    document.body.appendChild(img);
+});
+
+}
+
+document.body.addEventListener("click", (event) => {
+    if ((event.target as HTMLImageElement).tagName === "IMG") {
+        ponerDeNuevoPerro(); // Añadir una nueva imagen al hacer clic en una imagen existente
+        //y borra la anterior
+        document.body.removeChild(event.target as HTMLImageElement);
+    }
+});
+
+
+import Persona from './models/Persona'
+import Empleados from './models/Empleado'
+
+
+let persona1:Persona = new Persona("david","castro","000000000T",38);
+
+persona1.getNombre
 
 
 

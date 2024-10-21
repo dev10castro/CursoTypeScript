@@ -93,7 +93,10 @@ addContenido.addEventListener("click", evento =>{ //evento de ecucha al pulsar e
         let texto = document.createTextNode(textoInput.value); //creo una variable texto con el texto de input
         elementoLi.appendChild(star); //añado el elemento i
         elementoLi.appendChild(texto); //añado el texto
-        listaOl.appendChild(elementoLi); //se añade el li 
+        
+        listaOl.appendChild(elementoLi); //se añade el li
+        
+
         textoInput.value=""; //se pone el texto a vacio en el input
 
 
@@ -128,7 +131,7 @@ borraContenido.addEventListener("click", evento =>{ //creo un eventlistener
                 let mensajeErr = document.getElementById("p-errores") as HTMLParagraphElement; //recogemos elemento p-errores
                 mensajeErr.textContent="No hay coincidencias";
                 mensajeErr.style.color= "red";
-                divError.appendChild(mensajeErr);        //mostramos el mensaje de error
+                divError.appendChild(mensajeErr); //mostramos el mensaje de error
         }
         }
 
